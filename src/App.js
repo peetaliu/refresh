@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import Timer from './components/Timer'
 
 const App = () => {
-  const [timer, setTimer] = useState()
+  const [countdown, setCountdown] = useState(500000)
 
   return (
     <div>
-      <h1>Hello</h1>
+      <Timer countdown={countdown} setCountdown={setCountdown} />
     </div>
   )
 }
