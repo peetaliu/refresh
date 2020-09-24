@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 
 const Timer = ({ countdown, setCountdown }) => {
   useEffect(() => {
-    const interval = setInterval(() => setCountdown(countdown - 1000), 1000)
-    return () => clearInterval(interval)
+    if (countdown) {
+      const interval = setInterval(() => setCountdown(countdown - 1000), 1000)
+      return () => clearInterval(interval)
+    }
   })
 
   const ss = Math.floor((countdown / 1000) % 60).toLocaleString(undefined, {
