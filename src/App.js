@@ -6,47 +6,53 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 const App = () => {
   const [baseCd, setBaseCd] = useState(15000)
-  const [baseRf, setBaseRf] = useState()
+  const [baseRf, setBaseRf] = useState(15000)
   const [countdown, setCountdown] = useState(baseCd)
   const [refresh, setRefresh] = useState(0)
   const [notifPerm, setPerm] = useState(Notification.permission)
 
-  // if (!countdown) {
-  //   const interval = setInterval(() => setRefresh(refresh - 1000), 1000)
-  //   return () => clearInterval(interval)
-  // }
+  useEffect(() => {
+    setCountdown(baseCd)
+  }, [baseCd])
 
   if (notifPerm !== 'granted') {
     Notification.requestPermission().then(result => {
       setPerm(result)
     })
-  }
-
-  return (
-    <div id='app'>
-      <Container>
-        {notifPerm === 'granted' ? (
+    return (
+      <div id='app'>
+        <Container>
+          <h2>This app requires Notification permissions to run.</h2>
+        </Container>
+      </div>
+    )
+  } else {
+    return (
+      <div id='app'>
+        <Container>
           <Timer
             countdown={countdown}
             setCountdown={setCountdown}
-            cd={baseCd}
+            baseCd={baseCd}
+            baseRf={baseRf}
             setRefresh={setRefresh}
           />
-        ) : (
-          <h2>This page requires Notification permissions to run</h2>
-        )}
-        {refresh ? (
+          <TimerForm
+            baseCd={baseCd}
+            baseRf={baseRf}
+            setBaseCd={setBaseCd}
+            setBaseRf={setBaseRf}
+          />
           <Refresher
             refresh={refresh}
             setRefresh={setRefresh}
-            countdown={countdown}
+            setCountdown={setCountdown}
+            baseCd={baseCd}
           />
-        ) : (
-          ''
-        )}
-      </Container>
-    </div>
-  )
+        </Container>
+      </div>
+    )
+  }
 }
 
 export default App
